@@ -1,14 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
-import dns from "dns"
 import workspaceRoutes from './routes/workspaceRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 import { notFound, errorHandler } from './middleware/error.js';
 
 const app = express();
+
+// Connect DB for serverless environment
+connectDB().catch(err => console.error('[server] DB connection failed:', err.message));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
@@ -18,11 +21,6 @@ app.use(
     credentials: true,
   })
 );
-
-
-if(process.env.ENV !== "production"){
-  dns.setServers(["8.8.8.8","1.1.1.1"])
-}
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
