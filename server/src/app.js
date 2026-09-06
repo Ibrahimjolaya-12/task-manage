@@ -31,6 +31,10 @@ app.use('/api/v1/workspaces', workspaceRoutes);
 app.use('/api/v1/projects', projectRoutes);
 app.use('/api/v1/tasks', taskRoutes);
 
+app.get('/', (req, res) => {
+  res.send('API is running successfully');
+});
+
 app.use(notFound);
 app.use(errorHandler);
 
