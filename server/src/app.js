@@ -15,9 +15,25 @@ connectDB().catch(err => console.error('[server] DB connection failed:', err.mes
 
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
+// Allowed Origins Array
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://task-manage-frontend-ecru.vercel.app/",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+// Dynamic CORS Config (Har Vercel Deployment Link Auto-Allow Hoga)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'https://task-manage-frontend-ecru.vercel.app/',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
