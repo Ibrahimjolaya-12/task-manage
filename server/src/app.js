@@ -17,7 +17,7 @@ app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.CLIENT_URL || 'https://task-manage-frontend-ecru.vercel.app/',
     credentials: true,
   })
 );
