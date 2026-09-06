@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import dns from 'dns'
 import workspaceRoutes from './routes/workspaceRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
@@ -21,6 +22,10 @@ app.use(
     credentials: true,
   })
 );
+
+if(process.env.ENV!== "production"){
+  dns.setServers(["8.8.8.8","0.0.0.0","1.1.1.1"])
+}
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
