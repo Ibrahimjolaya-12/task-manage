@@ -9,6 +9,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
+
 let refreshing = null;
 
 api.interceptors.response.use(
